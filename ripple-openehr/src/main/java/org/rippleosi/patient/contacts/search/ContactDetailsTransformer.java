@@ -46,6 +46,8 @@ public class ContactDetailsTransformer implements Transformer<Map<String, Object
 
         String dateCreated = MapUtils.getString(input, "date_created");
         contact.setDateCreated(DateFormatter.toDate(dateCreated));
+        contact.setAddress(MapUtils.getString(input, "address"));
+
 
         return contact;
     }

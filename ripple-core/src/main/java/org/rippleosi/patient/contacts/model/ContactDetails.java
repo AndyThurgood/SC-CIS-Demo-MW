@@ -34,6 +34,7 @@ public class ContactDetails implements Serializable {
     private String notes;
     private String author;
     private Date dateCreated;
+    private String address;
 
     public String getSourceId() {
         return sourceId;
@@ -130,4 +131,9 @@ public class ContactDetails implements Serializable {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
+
+    public String getAddress() { return address; }
+
+    public void setAddress(String address) { this.address = address; }
+
 }
