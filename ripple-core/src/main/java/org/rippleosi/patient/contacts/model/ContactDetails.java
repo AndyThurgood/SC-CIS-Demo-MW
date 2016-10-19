@@ -35,6 +35,11 @@ public class ContactDetails implements Serializable {
     private String author;
     private Date dateCreated;
     private String address;
+    private String phone;
+
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) { this.phone = phone; }
 
     public String getSourceId() {
         return sourceId;

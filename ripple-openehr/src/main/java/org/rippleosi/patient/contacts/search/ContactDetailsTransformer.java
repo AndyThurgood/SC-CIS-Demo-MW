@@ -40,7 +40,7 @@ public class ContactDetailsTransformer implements Transformer<Map<String, Object
         contact.setRelationshipType(MapUtils.getString(input, "relationship_type"));
         contact.setRelationshipCode(MapUtils.getString(input, "relationship_code"));
         contact.setRelationshipTerminology(MapUtils.getString(input, "relationship_terminology"));
-        contact.setContactInformation(MapUtils.getString(input, "contact_information"));
+        contact.setPhone(MapUtils.getString(input, "contact_information"));
         contact.setNotes(MapUtils.getString(input, "notes"));
         contact.setAuthor(MapUtils.getString(input, "author"));
 
