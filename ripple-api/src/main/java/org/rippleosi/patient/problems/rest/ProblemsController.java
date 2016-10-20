@@ -97,7 +97,9 @@ public class ProblemsController {
     public void createProblem(@PathVariable("patientId") String patientId,
                               @RequestParam(required = false) String source,
                               @RequestBody ProblemDetails problem) {
-        final RepoSourceType sourceType = repoSourceLookup.lookup(source);
+        // Conventionally, data is written to EtherCIS.  If source is null then this will default to EtherCIS
+        // Until SC-CIS is available, write data to MARAND.
+        final RepoSourceType sourceType = RepoSourceTypes.MARAND;  // Default to MARAND for Sprint 2
         ProblemStore problemStore = problemStoreFactory.select(sourceType);
 
         problemStore.create(patientId, problem);

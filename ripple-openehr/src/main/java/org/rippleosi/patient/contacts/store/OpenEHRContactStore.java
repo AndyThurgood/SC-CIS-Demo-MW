@@ -86,7 +86,7 @@ public class OpenEHRContactStore extends AbstractOpenEhrService implements Conta
         content.put(CONTACT_PREFIX + "/individual_person/contact_details:0/comms_description", contact.getPhone());
      //   content.put(CONTACT_PREFIX + "/relationship", contact.getRelationship());
      //   content.put(CONTACT_PREFIX + "/relationship_category|" + contact.getRelationshipCode(), Boolean.TRUE);
-     //   content.put(CONTACT_PREFIX + "/relationship_category|value", contact.getRelationshipType());
+        content.put(CONTACT_PREFIX + "/relationship_role", contact.getRelationshipType());
         content.put(CONTACT_PREFIX + "/relationship_category|code", contact.getRelationshipCode());
      //   content.put(CONTACT_PREFIX + "/relationship_category|terminology", contact.getRelationshipTerminology());
         content.put(CONTACT_PREFIX + "/is_next_of_kin", nextOfKin);
