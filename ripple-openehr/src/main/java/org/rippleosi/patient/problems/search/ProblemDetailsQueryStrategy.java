@@ -42,7 +42,7 @@ public class ProblemDetailsQueryStrategy extends AbstractDetailsGetQueryStrategy
                 " a/context/start_time/value as dateCreated, " +
                 " b_a/data[at0001]/items[at0002]/value/value as problem, " +
                 " b_a/data[at0001]/items[at0002]/value/defining_code/code_string as problemCode, " +
-                " b_a/data[at0001]/items[at0002]/value/defining_code/terminology_id as problemTerminology, " +
+                " b_a/data[at0001]/items[at0002]/value/defining_code/terminology_id/value as problemTerminology, " +
                 " b_a/data[at0001]/items[at0077]/value/value as onsetDate, " +
                 " b_a/data[at0001]/items[at0009]/value/value as description " +
                 "from EHR e " +
