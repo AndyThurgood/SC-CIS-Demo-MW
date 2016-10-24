@@ -18,6 +18,7 @@ package org.rippleosi.patient.referral.rest;
 import java.util.List;
 
 import org.rippleosi.common.types.RepoSourceType;
+import org.rippleosi.common.types.RepoSourceTypes;
 import org.rippleosi.common.types.lookup.RepoSourceLookupFactory;
 import org.rippleosi.patient.referral.model.ReferralDetails;
 import org.rippleosi.patient.referral.model.ReferralSummary;
@@ -64,6 +65,16 @@ public class ReferralsController {
         final RepoSourceType sourceType = repoSourceLookup.lookup(source);
         ReferralSearch referralSearch = referralSearchFactory.select(sourceType);
 
+        ReferralDetails referral = referralSearch.findReferral(patientId, referralId);
+        if (referral.getReferralState().equalsIgnoreCase("completed")) {
+            // If this is a response then obtain the original request.
+            ReferralDetails originalReferral = referralSearch.findReferralByReference(patientId, referral.getReference());
+            // Populate the missing fields in the Referral Response from the original request
+            referral.setDateResponded(referral.getDateOfReferral());
+            referral.setDateOfReferral(originalReferral.getDateOfReferral());
+            referral.setReason(originalReferral.getReason());
+        }
+
         return referralSearch.findReferral(patientId, referralId);
     }
 
@@ -71,9 +82,16 @@ public class ReferralsController {
     public void createReferral(@PathVariable("patientId") String patientId,
                                @RequestParam(required = false) String source,
                                @RequestBody ReferralDetails referral) {
-        final RepoSourceType sourceType = repoSourceLookup.lookup(source);
+ //       final RepoSourceType sourceType = repoSourceLookup.lookup(source);
+        // for the time being until SC CIS is used, store referrals in Marand
+        // TODO: Default to SC CIS in Sprint 3
+        final RepoSourceType sourceType = RepoSourceTypes.MARAND;
         ReferralStore referralStore = referralStoreFactory.select(sourceType);
 
+        if (referral.getReferralState().equalsIgnoreCase("planned")) {
+            if (referral.getReference() == null || referral.getReference().equals(""))
+                referral.generateReference();
+        }
         referralStore.create(patientId, referral);
     }
 
@@ -81,7 +99,10 @@ public class ReferralsController {
     public void updateReferral(@PathVariable("patientId") String patientId,
                                @RequestParam(required = false) String source,
                                @RequestBody ReferralDetails referral) {
-        final RepoSourceType sourceType = repoSourceLookup.lookup(source);
+        //       final RepoSourceType sourceType = repoSourceLookup.lookup(source);
+        // for the time being until SC CIS is used, store referrals in Marand
+        // TODO: Default to SC CIS in Sprint 3
+        final RepoSourceType sourceType = RepoSourceTypes.MARAND;
         ReferralStore referralStore = referralStoreFactory.select(sourceType);
 
         referralStore.update(patientId, referral);

@@ -23,6 +23,7 @@ import org.rippleosi.common.service.AbstractOpenEhrService;
 import org.rippleosi.common.service.strategies.store.CreateStrategy;
 import org.rippleosi.common.service.strategies.store.DefaultStoreStrategy;
 import org.rippleosi.common.service.strategies.store.UpdateStrategy;
+import org.rippleosi.common.util.DateFormatter;
 import org.rippleosi.patient.contacts.model.ContactDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -68,27 +69,15 @@ public class OpenEHRContactStore extends AbstractOpenEhrService implements Conta
         content.put("ctx/territory", "GB");
         content.put("ctx/composer_name", contact.getAuthor());
         content.put("ctx/id_namespace", "NHS-UK");
+        content.put("ctx/time", DateFormatter.toString(contact.getDateCreated()));
 
         Boolean nextOfKin = contact.isNextOfKin() ? Boolean.TRUE : null;
 
-        /*
-        content.put(CONTACT_PREFIX + "/personal_details/person_name/unstructured_name", contact.getName());
-        content.put(CONTACT_PREFIX + "/personal_details/telecom_details/unstuctured_telcoms", contact.getContactInformation());
-        content.put(CONTACT_PREFIX + "/relationship", contact.getRelationship());
-        content.put(CONTACT_PREFIX + "/relationship_category|" + contact.getRelationshipCode(), Boolean.TRUE);
-        content.put(CONTACT_PREFIX + "/relationship_category|value", contact.getRelationshipType());
-        content.put(CONTACT_PREFIX + "/relationship_category|code", contact.getRelationshipCode());
-        content.put(CONTACT_PREFIX + "/relationship_category|terminology", contact.getRelationshipTerminology());
-        content.put(CONTACT_PREFIX + "/is_next_of_kin", nextOfKin);
-        content.put(CONTACT_PREFIX + "/note", contact.getNotes());
-        */
         content.put(CONTACT_PREFIX + "/individual_person/person_name/unstructured_name", contact.getName());
         content.put(CONTACT_PREFIX + "/individual_person/contact_details:0/comms_description", contact.getPhone());
-     //   content.put(CONTACT_PREFIX + "/relationship", contact.getRelationship());
-     //   content.put(CONTACT_PREFIX + "/relationship_category|" + contact.getRelationshipCode(), Boolean.TRUE);
-        content.put(CONTACT_PREFIX + "/relationship_role", contact.getRelationshipType());
+
+        content.put(CONTACT_PREFIX + "/relationship_role", contact.getRelationship());
         content.put(CONTACT_PREFIX + "/relationship_category|code", contact.getRelationshipCode());
-     //   content.put(CONTACT_PREFIX + "/relationship_category|terminology", contact.getRelationshipTerminology());
         content.put(CONTACT_PREFIX + "/is_next_of_kin", nextOfKin);
         content.put(CONTACT_PREFIX + "/note", contact.getNotes());
         content.put(CONTACT_PREFIX + "/individual_person/address/address_description", contact.getAddress());
