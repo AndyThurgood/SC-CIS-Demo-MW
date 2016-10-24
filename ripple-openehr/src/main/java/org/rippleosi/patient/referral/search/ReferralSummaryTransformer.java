@@ -38,6 +38,8 @@ public class ReferralSummaryTransformer implements Transformer<Map<String, Objec
         referral.setReferralFrom(MapUtils.getString(input, "referralFrom"));
         referral.setReferralTo(MapUtils.getString(input, "referralTo"));
         referral.setDateOfReferral(dateOfReferral);
+        referral.setReferralState(MapUtils.getString(input, "state"));
+        referral.setReferralType(MapUtils.getString(input, "type"));
 
         return referral;
     }

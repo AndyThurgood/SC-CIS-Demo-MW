@@ -63,6 +63,7 @@ public class OpenEHRReferralStore extends AbstractOpenEhrService implements Refe
         final String REFERRALS_PREFIX = "request_for_service/referral_details/service_request:0/";
         final String INSTRUCTION_DETAILS_PREFIX = "request_for_service/referral_details/service:0/instruction_details:0|";
         final String ISM_TRANS_PREFIX = "request_for_service/referral_details/service:0/ism_transition/";
+        final String SERVICE_PREFIX = "request_for_service/referral_details/service:0/";
 
         Map<String, Object> content = new HashMap<>();
 
@@ -104,11 +105,9 @@ public class OpenEHRReferralStore extends AbstractOpenEhrService implements Refe
             content.put(REFERRALS_PREFIX + "time", dateResponded);
         }
 
-        content.put(REFERRALS_PREFIX + "service_name", "Social work allocation request");
-
-        content.put(REFERRALS_PREFIX + "service_name", referral.getReferralType());  // Set to the same value as Type
+        content.put(SERVICE_PREFIX + "service_name", referral.getReferralType());  // Set to the same value as Type
         content.put(REFERRALS_PREFIX + "receiver_identifier", referral.getReference());  // Same as Reference
-        content.put(REFERRALS_PREFIX + "time", dateOfReferral);
+        content.put(SERVICE_PREFIX + "time", dateOfReferral);
 
         return content;
     }
