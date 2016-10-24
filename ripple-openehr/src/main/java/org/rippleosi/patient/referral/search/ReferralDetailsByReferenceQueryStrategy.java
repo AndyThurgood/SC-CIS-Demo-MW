@@ -1,40 +1,27 @@
-/*
- * Copyright 2015 Ripple OSI
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
 package org.rippleosi.patient.referral.search;
 
-import java.util.ArrayList;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.rippleosi.common.exception.DataNotFoundException;
+import org.rippleosi.common.exception.InvalidDataException;
+import org.rippleosi.common.service.strategies.query.details.AbstractDetailsGetQueryStrategy;
+import org.rippleosi.patient.referral.model.ReferralDetails;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.rippleosi.common.service.strategies.query.list.AbstractListGetQueryStrategy;
-import org.rippleosi.patient.referral.model.ReferralSummary;
+public class ReferralDetailsByReferenceQueryStrategy extends AbstractDetailsGetQueryStrategy<ReferralDetails> {
 
-/**
- */
-public class ReferralSummaryQueryStrategy extends AbstractListGetQueryStrategy<ReferralSummary> {
+    private String referralRef;
 
-    ReferralSummaryQueryStrategy(String patientId) {
+    public ReferralDetailsByReferenceQueryStrategy(String patientId, String referralRef) {
         super(patientId);
+        this.referralRef = referralRef;
     }
 
     @Override
     public String getQuery(String namespace, String patientId) {
-
         return "select a/composer/name as author, " +
                 "a/uid/value as compositionId, " +
                 "a/context/start_time/value as date, " +
@@ -56,15 +43,30 @@ public class ReferralSummaryQueryStrategy extends AbstractListGetQueryStrategy<R
                 "from EHR e contains COMPOSITION a[openEHR-EHR-COMPOSITION.request.v1] " +
                 "contains ( INSTRUCTION b_a[openEHR-EHR-INSTRUCTION.request.v0] or " +
                 "ACTION b_d[openEHR-EHR-ACTION.service.v0]) " +
+                /*
                 "where a/name/value='Request for service' and " +
                 " (e/ehr_status/subject/external_ref/namespace='" + namespace + "' and " +
-                "e/ehr_status/subject/external_ref/id/value='" + patientId + "')";
+                "e/ehr_status/subject/external_ref/id/value='" + patientId + "') and " + */
+                " where b_a/protocol[at0008]/items[at0011]/value/value='" + referralRef + "'";
     }
 
     @Override
-    public List<ReferralSummary> transform(List<Map<String, Object>> resultSet) {
+    public ReferralDetails transform(List<Map<String, Object>> resultSet) {
+
+        if (resultSet.isEmpty()) {
+            throw new DataNotFoundException("No results found");
+        }
+
         Collection<Map<String, Object>> filtered = CollectionUtils.select(resultSet, new ReferralOnlyPredicate());
 
-        return CollectionUtils.collect(filtered, new ReferralSummaryTransformer(), new ArrayList<>());
+        if (filtered.size() > 1) {
+            throw new InvalidDataException("Too many results found");
+        }
+
+        Map<String, Object> data = resultSet.get(0);
+
+        return new ReferralDetailsTransformer().transform(data);
+
     }
 }
+

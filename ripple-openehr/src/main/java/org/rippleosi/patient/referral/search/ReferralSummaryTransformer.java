@@ -30,13 +30,13 @@ public class ReferralSummaryTransformer implements Transformer<Map<String, Objec
     @Override
     public ReferralSummary transform(Map<String, Object> input) {
 
-        Date dateOfReferral = DateFormatter.toDate(MapUtils.getString(input, "referral_date"));
+        Date dateOfReferral = DateFormatter.toDate(MapUtils.getString(input, "date"));
 
         ReferralSummary referral = new ReferralSummary();
         referral.setSource("Marand");
-        referral.setSourceId(MapUtils.getString(input, "uid"));
-        referral.setReferralFrom(MapUtils.getString(input, "referral_from"));
-        referral.setReferralTo(MapUtils.getString(input, "referral_to"));
+        referral.setSourceId(MapUtils.getString(input, "compositionId"));
+        referral.setReferralFrom(MapUtils.getString(input, "referralFrom"));
+        referral.setReferralTo(MapUtils.getString(input, "referralTo"));
         referral.setDateOfReferral(dateOfReferral);
 
         return referral;
