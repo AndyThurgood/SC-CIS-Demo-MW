@@ -70,14 +70,13 @@ public class OpenEHRReferralStore extends AbstractOpenEhrService implements Refe
         content.put("ctx/language", "en");
         content.put("ctx/territory", "GB");
 
-        String dateOfReferral = DateFormatter.toString(referral.getDateOfReferral());
+
 
         content.put("ctx/composer_name", referral.getAuthor());
         content.put("ctx/id_namespace", "NHS-UK");
 
         content.put(REFERRALS_PREFIX + "request:0/service_name", referral.getReferralType());
         content.put(REFERRALS_PREFIX + "request:0/reason_for_request", referral.getReason());
-        content.put(REFERRALS_PREFIX + "request:0/reason_description", referral.getClinicalSummary());
         content.put(REFERRALS_PREFIX + "request:0/timing", "R5/2016-10-04T21:00:00Z/P1M"); // Boilerplate value
         content.put(REFERRALS_PREFIX + "requestor/person_name/unstructured_name", referral.getReferralFrom());
         content.put(REFERRALS_PREFIX + "receiver_identifier", referral.getReference());
@@ -95,19 +94,22 @@ public class OpenEHRReferralStore extends AbstractOpenEhrService implements Refe
         content.put(ISM_TRANS_PREFIX + "current_state|code", refState.getReferralStateCode());
         content.put(ISM_TRANS_PREFIX + "current_state|value", refState.getRefState());
         if (refState.getRefState().equalsIgnoreCase("Planned")) {
+            content.put(REFERRALS_PREFIX + "request:0/reason_description", referral.getClinicalSummary());
             content.put(ISM_TRANS_PREFIX + "careflow_step|code", "at0026");
             content.put(ISM_TRANS_PREFIX + "careflow_step|value", "Service request sent");
+            String dateOfReferral = DateFormatter.toSimpleDateString(referral.getDateOfReferral());
+            content.put(SERVICE_PREFIX + "time", dateOfReferral);
         } else if (refState.getRefState().equalsIgnoreCase("Completed")) {
             content.put(ISM_TRANS_PREFIX + "careflow_step|code", "at0005");
             content.put(ISM_TRANS_PREFIX + "careflow_step|value", "Service request complete");
-            content.put(REFERRALS_PREFIX + "comment", referral.getReferralOutcome());
-            String dateResponded = DateFormatter.toString(referral.getDateResponded());
-            content.put(REFERRALS_PREFIX + "time", dateResponded);
+      //      content.put(REFERRALS_PREFIX + "comment", referral.getReferralOutcome());
+            String dateResponded = DateFormatter.toSimpleDateString(referral.getDateResponded());
+            content.put(SERVICE_PREFIX + "time", dateResponded);
         }
 
         content.put(SERVICE_PREFIX + "service_name", referral.getReferralType());  // Set to the same value as Type
         content.put(REFERRALS_PREFIX + "receiver_identifier", referral.getReference());  // Same as Reference
-        content.put(SERVICE_PREFIX + "time", dateOfReferral);
+
 
         return content;
     }
