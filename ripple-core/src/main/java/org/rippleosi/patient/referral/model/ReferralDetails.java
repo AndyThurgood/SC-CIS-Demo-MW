@@ -38,6 +38,7 @@ public class ReferralDetails implements Serializable {
     private String referralType;
     private String referralOutcome;
     private Date dateResponded;
+    private String responseSourceId;
 
     public String getSourceId() {
         return sourceId;
@@ -134,5 +135,7 @@ public class ReferralDetails implements Serializable {
         this.setReference(UUIDGenerator.generate());
     }
 
+    public String getResponseSourceId() { return responseSourceId; }
 
+    public void setResponseSourceId(String responseSourceId) { this.responseSourceId = responseSourceId; }
 }

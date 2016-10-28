@@ -17,6 +17,7 @@ package org.rippleosi.patient.referral.rest;
 
 import java.util.List;
 
+import org.rippleosi.common.exception.DataNotFoundException;
 import org.rippleosi.common.types.RepoSourceType;
 import org.rippleosi.common.types.RepoSourceTypes;
 import org.rippleosi.common.types.lookup.RepoSourceLookupFactory;
@@ -26,6 +27,7 @@ import org.rippleosi.patient.referral.search.ReferralSearch;
 import org.rippleosi.patient.referral.search.ReferralSearchFactory;
 import org.rippleosi.patient.referral.store.ReferralStore;
 import org.rippleosi.patient.referral.store.ReferralStoreFactory;
+import org.rippleosi.patient.referral.types.ReferralStates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,9 +73,26 @@ public class ReferralsController {
             ReferralDetails originalReferral = referralSearch.findReferralByReference(patientId, referral.getReference());
             // Populate the missing fields in the Referral Response from the original request
             referral.setDateResponded(referral.getDateOfReferral());
-            referral.setDateOfReferral(originalReferral.getDateOfReferral());
+            referral.setDateOfReferral(originalReferral.getDateCreated());
             referral.setReason(originalReferral.getReason());
         }
+        else
+        {
+            // This is a referral Request that's been passed in.
+            // Check if any responses already exist for it.
+            if (referral.getResponseSourceId() == null || referral.getResponseSourceId().equalsIgnoreCase("")) {
+                String responseId = null;
+                try {
+                    ReferralDetails possibleReferralResponse =
+                            referralSearch.findReferralByReference(patientId, referral.getReference(),
+                                    ReferralStates.COMPLETED.getReferralStateCode());
+                    responseId = possibleReferralResponse.getSourceId();
+                } catch (DataNotFoundException dnfe) {  }  // Do Nothing
+                // Set the Response Source ID so that the UI knows if a request has any responses
+                referral.setResponseSourceId(responseId);
+                }
+            }
+
 
         return referralSearch.findReferral(patientId, referralId);
     }

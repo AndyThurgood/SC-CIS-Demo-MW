@@ -35,6 +35,7 @@ public class ReferralDetailsTransformer implements Transformer<Map<String,Object
 
         ReferralDetails referral = new ReferralDetails();
         referral.setSource("Marand");
+        referral.setReferralState(MapUtils.getString(input, "state"));
         referral.setSourceId(MapUtils.getString(input, "compositionId"));
         referral.setReferralFrom(MapUtils.getString(input, "referralFrom"));
         referral.setReferralTo(MapUtils.getString(input, "referralTo"));
@@ -44,8 +45,12 @@ public class ReferralDetailsTransformer implements Transformer<Map<String,Object
         referral.setAuthor(MapUtils.getString(input, "author"));
         referral.setDateCreated(dateCreated);
         referral.setReference(MapUtils.getString(input,"referral_ref"));
-        referral.setReferralState(MapUtils.getString(input, "state"));
         referral.setReferralType(MapUtils.getString(input, "type"));
+        if (referral.getReferralState().equalsIgnoreCase("completed")) {
+            // This is a Referral Response
+            referral.setDateResponded(dateOfReferral);
+            referral.setReferralOutcome(MapUtils.getString(input, "Outcome"));
+        }
 
         return referral;
     }

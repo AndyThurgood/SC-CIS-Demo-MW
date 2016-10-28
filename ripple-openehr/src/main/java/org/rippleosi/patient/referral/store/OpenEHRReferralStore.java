@@ -102,7 +102,7 @@ public class OpenEHRReferralStore extends AbstractOpenEhrService implements Refe
         } else if (refState.getRefState().equalsIgnoreCase("Completed")) {
             content.put(ISM_TRANS_PREFIX + "careflow_step|code", "at0005");
             content.put(ISM_TRANS_PREFIX + "careflow_step|value", "Service request complete");
-      //      content.put(REFERRALS_PREFIX + "comment", referral.getReferralOutcome());
+            content.put(SERVICE_PREFIX + "comment", referral.getReferralOutcome());
             String dateResponded = DateFormatter.toSimpleDateString(referral.getDateResponded());
             content.put(SERVICE_PREFIX + "time", dateResponded);
         }
