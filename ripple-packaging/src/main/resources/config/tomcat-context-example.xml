@@ -47,6 +47,8 @@
     <Environment name="etherCIS.problemTemplate"            type="java.lang.String" override="false" value="IDCR Problem List.v1"/>
     <Environment name="etherCIS.procedureTemplate"          type="java.lang.String" override="false" value="IDCR Procedures List.v0"/>
 
+	<Environment name="scCIS.address"                       type="java.lang.String" override="false" value="http://esbdev.leeds.gov.uk/AdultNHS/LCR/GetPatient"/>
+	
     <Environment name="legacy.datasource.vendor"            type="java.lang.String"  override="false" value="mysql"/>
     <Environment name="legacy.datasource.host"              type="java.lang.String"  override="false" value="127.0.0.1"/>
     <Environment name="legacy.datasource.port"              type="java.lang.String"  override="false" value="3306"/>
