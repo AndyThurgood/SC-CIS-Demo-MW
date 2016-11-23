@@ -6,7 +6,6 @@ import org.rippleosi.common.util.DateFormatter;
 import org.rippleosi.patient.problems.model.ProblemSummary;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;

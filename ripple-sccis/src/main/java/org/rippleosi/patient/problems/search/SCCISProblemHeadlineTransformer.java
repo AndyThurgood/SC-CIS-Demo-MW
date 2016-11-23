@@ -34,7 +34,6 @@ public class SCCISProblemHeadlineTransformer implements Transformer<Node, List<P
                 problem.setSourceId(sourceId);
                 String problemDiagnosis = (String) xpath.evaluate("code/coding/display/@value", node, XPathConstants.STRING);
                 problem.setProblem(problemDiagnosis);
-             //   String dateOfOnset = (String) xpath.evaluate("onsetDateTime/@value", node, XPathConstants.STRING);
                 problemList.add(problem);
             }
         } catch (XPathExpressionException e) {

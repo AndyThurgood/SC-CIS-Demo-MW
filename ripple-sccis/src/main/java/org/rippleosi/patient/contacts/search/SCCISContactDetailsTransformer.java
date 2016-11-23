@@ -25,8 +25,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 
-/**
- */
 public class SCCISContactDetailsTransformer implements Transformer<Node, ContactDetails> {
 
     private String contactId;
@@ -86,14 +84,12 @@ public class SCCISContactDetailsTransformer implements Transformer<Node, Contact
 
                         String name = (String) xpath.evaluate("name/text/@value", node, XPathConstants.STRING);
                         String relationshipTeam = (String) xpath.evaluate("practitionerRole/role/coding/display/@value", node, XPathConstants.STRING);
-                        //            String address = (String) xpath.evaluate("address/text/@value", node, XPathConstants.STRING);
                         String phone = (String) xpath.evaluate("telecom[1]/value/@value", node, XPathConstants.STRING);
 
                         contact.setSourceId(sourceId);
                         contact.setName(name);
                         contact.setRelationship(relationshipTeam);
 
-                        //            contact.setAddress(address);
                         contact.setPhone(phone);
                         contact.setAuthor("Adult Social Care System");
 

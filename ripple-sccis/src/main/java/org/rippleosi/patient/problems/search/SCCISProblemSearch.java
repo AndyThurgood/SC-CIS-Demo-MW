@@ -30,14 +30,14 @@ public class SCCISProblemSearch extends AbstractSCCISService implements ProblemS
 
     @Override
     public List<ProblemHeadline> findProblemHeadlines(String patientId) {
-  //      ProblemHeadlineQueryStrategy query = new ProblemHeadlineQueryStrategy(patientId);
+
         SCCISProblemHeadlineTransformer transformer = new SCCISProblemHeadlineTransformer();
         return findData(patientId, transformer);
     }
 
     @Override
     public List<ProblemSummary> findAllProblems(String patientId) {
-  //      ProblemSummaryQueryStrategy query = new ProblemSummaryQueryStrategy(patientId);
+
         SCCISProblemSummaryTransformer transformer = new SCCISProblemSummaryTransformer();
 
         return findData(patientId, transformer);
@@ -45,7 +45,7 @@ public class SCCISProblemSearch extends AbstractSCCISService implements ProblemS
 
     @Override
     public ProblemDetails findProblem(String patientId, String problemId) {
-//        ProblemDetailsQueryStrategy query = new ProblemDetailsQueryStrategy(patientId, problemId);
+
         SCCISProblemDetailsTransformer transformer = new SCCISProblemDetailsTransformer(problemId);
 
         return findData(patientId, transformer);
@@ -53,18 +53,11 @@ public class SCCISProblemSearch extends AbstractSCCISService implements ProblemS
 
     @Override
     public List<Condition> findAllFhirConditions(String patientId) {
-  //      String ehrId = new EhrIdLookup().transform(patientId);
-
-  //      FhirConditionsQueryStrategy query = new FhirConditionsQueryStrategy(patientId, ehrId, openEhrAddress);
-
-        return null;
+       return null;
     }
 
     @Override
     public Condition findFhirCondition(String patientId, String conditionId) {
-  //      String ehrId = new EhrIdLookup().transform(patientId);
-
-  //      FhirConditionQueryStrategy query = new FhirConditionQueryStrategy(patientId, ehrId, openEhrAddress, conditionId);
 
         return null;
     }

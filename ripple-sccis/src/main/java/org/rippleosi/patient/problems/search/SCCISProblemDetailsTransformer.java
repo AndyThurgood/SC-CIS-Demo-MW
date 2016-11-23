@@ -4,7 +4,6 @@ package org.rippleosi.patient.problems.search;
 import org.apache.commons.collections4.Transformer;
 import org.rippleosi.common.util.DateFormatter;
 import org.rippleosi.patient.problems.model.ProblemDetails;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import javax.xml.xpath.XPath;

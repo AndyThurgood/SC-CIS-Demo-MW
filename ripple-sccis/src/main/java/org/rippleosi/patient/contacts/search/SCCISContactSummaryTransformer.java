@@ -53,17 +53,10 @@ public class SCCISContactSummaryTransformer implements Transformer<Node, List<Co
                 String sourceId = (String) xpath.evaluate("identifier/value/@value", node, XPathConstants.STRING);
                 String name = (String) xpath.evaluate("name/text/@value", node, XPathConstants.STRING);
                 String relationshipTeam = (String) xpath.evaluate("relationship/coding/display/@value", node, XPathConstants.STRING);
- //               String address = (String) xpath.evaluate("/address/text/@value", node, XPathConstants.STRING);
- //               String phone = (String) xpath.evaluate("/telecom[1]/value/@value", node, XPathConstants.STRING);
 
                 contact.setSourceId(sourceId);
                 contact.setName(name);
                 contact.setRelationship(relationshipTeam);
-                /*
-                contact.setAddress(address);
-                contact.setPhone(phone);
-                contact.setAuthor("Adult Social Care System");
-                */
                 contactList.add(contact);
             }
 
@@ -78,14 +71,10 @@ public class SCCISContactSummaryTransformer implements Transformer<Node, List<Co
                 String sourceId = (String) xpath.evaluate("identifier/value/@value", node, XPathConstants.STRING);
                 String name = (String) xpath.evaluate("name/text/@value", node, XPathConstants.STRING);
                 String relationshipTeam = (String) xpath.evaluate("practitionerRole/role/coding/display/@value", node, XPathConstants.STRING);
-         //       String phone = (String) xpath.evaluate("telecom[1]/value/@value", node, XPathConstants.STRING);
 
                 contact.setSourceId(sourceId);
                 contact.setName(name);
                 contact.setRelationship(relationshipTeam);
-
-        //        contact.setPhone(phone);
-        //        contact.setAuthor("Adult Social Care System");
 
                 contactList.add(contact);
             }
