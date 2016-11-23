@@ -38,7 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public abstract class AbstractSCCISService implements Repository {
 
-    @Value("${repository.config.c4hOpenEHR:1000}")
+    @Value("${repository.config.c4hOpenEHR:2000}")
     private int priority;
 
     @Value("${scCIS.address}")

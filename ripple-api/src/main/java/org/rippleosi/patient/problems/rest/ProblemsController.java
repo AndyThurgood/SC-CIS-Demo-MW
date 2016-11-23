@@ -63,6 +63,9 @@ public class ProblemsController {
         ProblemSearch vistaSearch = problemSearchFactory.select(RepoSourceTypes.VISTA);
         problems.addAll(vistaSearch.findAllProblems("17"));
 
+        ProblemSearch scCISSearch = problemSearchFactory.select(RepoSourceTypes.SCCIS);
+        problems.addAll(scCISSearch.findAllProblems(patientId));
+
         return problems;
     }
 
@@ -75,6 +78,9 @@ public class ProblemsController {
 
         ProblemSearch vistaSearch = problemSearchFactory.select(RepoSourceTypes.VISTA);
         problemHeadlines.addAll(vistaSearch.findProblemHeadlines("17"));
+
+        ProblemSearch scCISSearch = problemSearchFactory.select(RepoSourceTypes.SCCIS);
+        problemHeadlines.addAll(scCISSearch.findProblemHeadlines(patientId));
 
         return problemHeadlines;
     }
