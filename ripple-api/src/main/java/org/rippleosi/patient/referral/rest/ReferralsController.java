@@ -54,10 +54,15 @@ public class ReferralsController {
     @RequestMapping(method = RequestMethod.GET)
     public List<ReferralSummary> findAllReferrals(@PathVariable("patientId") String patientId,
                                                   @RequestParam(required = false) String source) {
-        final RepoSourceType sourceType = repoSourceLookup.lookup(source);
-        ReferralSearch referralSearch = referralSearchFactory.select(sourceType);
 
-        return referralSearch.findAllReferrals(patientId);
+        ReferralSearch referralSearch = referralSearchFactory.select(RepoSourceTypes.MARAND);
+        List<ReferralSummary> openEHRReferrals = referralSearch.findAllReferrals(patientId);
+
+        referralSearch = referralSearchFactory.select(RepoSourceTypes.SCCIS);
+        List<ReferralSummary> scCISReferrals = referralSearch.findAllReferrals(patientId);
+
+        openEHRReferrals.addAll(scCISReferrals);
+        return openEHRReferrals;
     }
 
     @RequestMapping(value = "/{referralId}", method = RequestMethod.GET)
@@ -79,19 +84,22 @@ public class ReferralsController {
         else
         {
             // This is a referral Request that's been passed in.
-            // Check if any responses already exist for it.
-            if (referral.getResponseSourceId() == null || referral.getResponseSourceId().equalsIgnoreCase("")) {
-                String responseId = null;
-                try {
-                    ReferralDetails possibleReferralResponse =
-                            referralSearch.findReferralByReference(patientId, referral.getReference(),
-                                    ReferralStates.COMPLETED.getReferralStateCode());
-                    responseId = possibleReferralResponse.getSourceId();
-                } catch (DataNotFoundException dnfe) {  }  // Do Nothing
-                // Set the Response Source ID so that the UI knows if a request has any responses
-                referral.setResponseSourceId(responseId);
+            // Check if any responses already exist for it. - Only for Marand at present
+            if (sourceType == RepoSourceTypes.MARAND) {
+                if (referral.getResponseSourceId() == null || referral.getResponseSourceId().equalsIgnoreCase("")) {
+                    String responseId = null;
+                    try {
+                        ReferralDetails possibleReferralResponse =
+                                referralSearch.findReferralByReference(patientId, referral.getReference(),
+                                        ReferralStates.COMPLETED.getReferralStateCode());
+                        responseId = possibleReferralResponse.getSourceId();
+                    } catch (DataNotFoundException dnfe) {
+                    }  // Do Nothing
+                    // Set the Response Source ID so that the UI knows if a request has any responses
+                    referral.setResponseSourceId(responseId);
                 }
             }
+        }
 
 
         return referralSearch.findReferral(patientId, referralId);
