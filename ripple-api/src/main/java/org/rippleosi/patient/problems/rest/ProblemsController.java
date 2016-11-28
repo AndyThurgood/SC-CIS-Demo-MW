@@ -58,7 +58,8 @@ public class ProblemsController {
         List<ProblemSummary> problems = problemSearch.findAllProblems(patientId);
 
         ProblemSearch openehrSearch = problemSearchFactory.select(RepoSourceTypes.MARAND);
-        problems.addAll(openehrSearch.findAllProblems(patientId));
+        List<ProblemSummary> openEHRProbs = openehrSearch.findAllProblems(patientId);
+        problems.addAll(openEHRProbs);
 
         ProblemSearch vistaSearch = problemSearchFactory.select(RepoSourceTypes.VISTA);
         problems.addAll(vistaSearch.findAllProblems("17"));
